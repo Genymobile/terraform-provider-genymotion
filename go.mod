@@ -1,4 +1,4 @@
-module github.com/genymobile/terraform-provider-genymotion
+module github.com/terraform-providers/terraform-provider-genymotion
 
 go 1.12
 
