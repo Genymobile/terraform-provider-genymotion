@@ -6,43 +6,13 @@ sudo: required
 
 env:
   global:
-    - ANDROID_API_LEVEL=28
-    - ANDROID_BUILD_TOOLS_VERSION=28.0.3
-    # SDK Tools Revision 26.1.1
-    - ANDROID_SDK_TOOLS=sdk-tools-linux-4333796.zip
-    # For Updates check https://developer.android.com/studio#downloads
     - GOFLAGS=-mod=vendor
     - GO111MODULE=on
 
 go:
   - "1.12.x"
 
-before_install:
-  # check if OpenJDK8 is installed and install if missing
-  - if ! dpkg -s openjdk-8-jdk >/dev/null 2>&1; then sudo apt-get update; sudo apt-get install openjdk-8-jdk; fi
-  - java -version
-  # print available java versions with their path (must contain java-8-openjdk-amd64)
-  - sudo update-alternatives --config java
-  # set JAVA_HOME path
-  - export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-  # download und unzip Android SDK Tools
-  - wget https://dl.google.com/android/repository/$ANDROID_SDK_TOOLS
-  - unzip -q $ANDROID_SDK_TOOLS -d $HOME/sdk
-  # set SDK Tools path variable and ANDROID_HOME
-  - export PATH=$PATH:$HOME/sdk/tools/bin
-  - export ANDROID_HOME=$HOME/sdk
-  # create empty cfg file to prevent sdkmanager warning message
-  - mkdir -p $HOME/.android && touch $HOME/.android/repositories.cfg
-
 install:
-  # latest SDK Platform-Tools
-  - yes | sdkmanager "platform-tools" >/dev/null
-  # defined SDK Platform
-  - yes | sdkmanager "platforms;android-$ANDROID_API_LEVEL" >/dev/null
-  # defined SDK Build-Tools
-  - yes | sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION" >/dev/null
-  # list installed and available packages
-  - sdkmanager --list
 
   # This script is used by the Travis build to install a cookie for
   # go.googlesource.com so rate limits are higher when using `go get` to fetch
@@ -53,12 +23,6 @@ install:
 
 git:
   depth: 1
-
-before_script:
-  - pyenv global system 3.7
-  - pip3 install gmsaas
-  - gmsaas auth login $GENYMOTION_EMAIL $GENYMOTION_PASSWORD
-  - gmsaas config set android-sdk-path $ANDROID_HOME
 
 script:
   - make lint
