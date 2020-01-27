@@ -13,8 +13,6 @@ env:
     # For Updates check https://developer.android.com/studio#downloads
     - GOFLAGS=-mod=vendor
     - GO111MODULE=on
-    - secure: "Wj8EnRnpZ/rhTtEVD/5XHjnIzBImw0lAMQX9ip/6QO2c0ENhFDamhKsNr1gRMYfQKpQbiTRwYFqlQjtBKLB9cfumxxZcx9ApvXU7Mg+bWqEJ9Iy71Xr1saSX6F/wP8CZuNAGGSIm4pI1Tkug616HJMvgVUdC7lua+QwCoMIdP7nLpoOLvT7jVrkvUqoyUjaVXz40zGbG3lpeLuEzSO0/gpgAATH0rTfvr9GxsgflaKVRCBUknKbYdRAn1Ya1VLmAQrkQa/uC8qAQpkFHexxuI45Nti3sh8zoZrl1C53xEPwpb9ZvJJvFUPSphq5KRUTHCHhkWAuZypr1UJoXkWsv7K+HGnLolkBd+99LHmEllz3H9ujk8JdM38TciMd89D7+Nif/xnsjZX3tulaiynel/OfuneK+FVU+ddtCV+OyuvZ01qrKXLzMl8lN8r46ew04dPxy6wV2gCtGnBunCE37nS7j4kQVxAFzv7MfiXzNhtkydRvUej2fIAvAWKh3NfM/Cg7sus+Ner7g8ubTTJxyGrMSUqinE2L2jGJ+qxSb+2wa1WRtZB15UoHpwVIDnldjg+UHti9sBXlpSBHug0K3Es4tXrPypajNS4y2FXjLNeioyMHVqK0N37FSsBSvZASYADAW2CW+TzwhLIvotN20UYbpjr9q1zutTzVdunlrxOw="
-    - secure: "ottAIv4MC9aPkDnwt0qpyzHmSfuj3CxuN22DH1aHxsl9xOLchd8X9tfw3s1pWL3u5M8b7osb6Vm7wU2LD5GnxPJVo2Wz9K/7uxKc5YFjbwlsI15fAqAkFmWe7ZdkXqEKIr3rMHaCNwDRyOu67kqE9fYe6BqqQexk/PFLkmpNRjaACv/vXfDP+lBtRtvMf6ZAmu62O7Xxb/iREu0cbTGtGsrlNL7CZW1CjnJmjXWUYU8Z9iuNKmAV9fPTPz7tetO42M8WftY8mi2F3Yxsx7MbpS1+/a7CUx/m5LDN4kTZF0IsFZbuDyr16KilgtOAXPJqE6ZCntLfAn2jmXYzvIKIIY17f0XYrr46rP0EsDivd+/gkxBv83ycnXQYQiNZuWSIZLsCGAWSdxkv76O1st/8FXKILKvlNX93gV/LgJfH7A3oY/w+LAxqNpBdm42kOq938y4dn66MPv+PzzqMIn7pxAW92mlNYvTlIhcywDkTXZItET82SC4E+tX3x1aiUVP1hsz0P2WxtusknRlK1L0B72SVzkvBdIfXOLy+AK+m7nqMdm8/vq//v2McoXOq4FdVxzsTMJSGNdSvBN5opflKO2egspB5P6Nn/fi8VePuASFtOLvq2Bsi7yb4y73SRRScsG1g2Dpb/9kgOprQR+F5vvsuLgQnZC2UwWIvRCi1BLk="
 
 go:
   - "1.12.x"
@@ -64,7 +62,7 @@ before_script:
 
 script:
   - make lint
-  - make testacc
+  - make test
 
 branches:
   only:
