@@ -4,11 +4,20 @@ import (
 	"bufio"
 	"fmt"
 	"log"
+	"os"
 	"os/exec"
 	"strings"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 )
+
+func prepareGmsaasCommand(cmd *exec.Cmd) *exec.Cmd {
+	cmd.Env = append(
+		os.Environ(),
+		"GMSAAS_USER_AGENT_EXTRA_DATA=Terraform",
+	)
+	return cmd
+}
 
 func resourceGenymotion() *schema.Resource {
 	return &schema.Resource{
@@ -58,7 +67,7 @@ func resourceGenymotionCreate(d *schema.ResourceData, m interface{}) error {
 	connectedWithAdb := d.Get("adbconnect")
 
 	// Start Genymotion Cloud Device
-	cmd := exec.Command("gmsaas", "instances", "start", recipeUUID, name)
+	cmd := prepareGmsaasCommand(exec.Command("gmsaas", "instances", "start", recipeUUID, name))
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return fmt.Errorf("Error: %s", output)
@@ -68,13 +77,13 @@ func resourceGenymotionCreate(d *schema.ResourceData, m interface{}) error {
 	if connectedWithAdb == true {
 		uuid, _ := GetInstanceDetails(name)
 		if len(adbSerialPort) > 0 {
-			cmd := exec.Command("gmsaas", "instances", "adbconnect", uuid, "--adb-serial-port", adbSerialPort)
+			cmd := prepareGmsaasCommand(exec.Command("gmsaas", "instances", "adbconnect", uuid, "--adb-serial-port", adbSerialPort))
 			output, err := cmd.CombinedOutput()
 			if err != nil {
 				return fmt.Errorf("Error: %s", output)
 			}
 		} else {
-			cmd := exec.Command("gmsaas", "instances", "adbconnect", uuid)
+			cmd := prepareGmsaasCommand(exec.Command("gmsaas", "instances", "adbconnect", uuid))
 			output, err := cmd.CombinedOutput()
 			if err != nil {
 				return fmt.Errorf("Error: %s", output)
@@ -108,7 +117,7 @@ func resourceGenymotionDelete(d *schema.ResourceData, m interface{}) error {
 
 	uuid, _ := GetInstanceDetails(name)
 	// Stop Genymotion Cloud Device
-	cmd := exec.Command("gmsaas", "instances", "stop", uuid)
+	cmd := prepareGmsaasCommand(exec.Command("gmsaas", "instances", "stop", uuid))
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return fmt.Errorf("Error: %s", output)
@@ -131,7 +140,7 @@ func GetInstanceDetails(name string) (string, string) {
 }
 
 func GetInstancesList() []string {
-	adminList := exec.Command("gmsaas", "instances", "list")
+	adminList := prepareGmsaasCommand(exec.Command("gmsaas", "instances", "list"))
 	stdout, _ := adminList.StdoutPipe()
 	err := adminList.Start()
 	if err != nil {
